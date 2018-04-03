@@ -21,7 +21,7 @@ def train_net(net, epochs=5, batch_size=2, lr=0.1, val_percent=0.05,
     dir_checkpoint = 'checkpoints/'
 
     ids = get_ids(dir_img)
-    ids = split_ids(ids)
+    # ids = split_ids(ids)
 
     iddataset = split_train_val(ids, val_percent)
 
@@ -39,8 +39,8 @@ def train_net(net, epochs=5, batch_size=2, lr=0.1, val_percent=0.05,
 
     N_train = len(iddataset['train'])
 
-    train = get_imgs_and_masks(iddataset['train'], dir_img, dir_mask)
-    val = get_imgs_and_masks(iddataset['val'], dir_img, dir_mask)
+    # train = get_imgs_and_masks(iddataset['train'], dir_img, dir_mask)
+    # val = get_imgs_and_masks(iddataset['val'], dir_img, dir_mask)
 
     optimizer = optim.SGD(net.parameters(),
                           lr=lr, momentum=0.9, weight_decay=0.0005)

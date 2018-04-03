@@ -14,6 +14,7 @@ def get_square(img, pos):
 
 
 def resize_and_crop(pilimg, scale=0.5, final_height=None):
+# def resize_and_crop(pilimg, scale=1, final_height=None):
     w = pilimg.size[0]
     h = pilimg.size[1]
     newW = int(w * scale)

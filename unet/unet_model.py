@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # full assembly of the sub-parts to form the complete net
 
 import torch
@@ -34,4 +33,5 @@ class UNet(nn.Module):
         x = self.up3(x, x2)
         x = self.up4(x, x1)
         x = self.outc(x)
+        
         return x

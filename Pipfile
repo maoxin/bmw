@@ -12,6 +12,7 @@ name = "pypi"
 # torchvision = "*"
 pandas = "*"
 matplotlib = "*"
+ipython = "*"
 
 
 [dev-packages]
