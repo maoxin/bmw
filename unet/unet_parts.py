@@ -10,10 +10,10 @@ class double_conv(nn.Module):
     def __init__(self, in_ch, out_ch):
         super(double_conv, self).__init__()
         self.conv = nn.Sequential(
-            nn.Conv2d(in_ch, out_ch, 3),
+            nn.Conv2d(in_ch, out_ch, 3, padding=1),
             nn.BatchNorm2d(out_ch),
             nn.ReLU(),
-            nn.Conv2d(out_ch, out_ch, 3),
+            nn.Conv2d(out_ch, out_ch, 3,padding=1),
             nn.BatchNorm2d(out_ch),
             nn.ReLU()
         )
@@ -69,7 +69,16 @@ class up(nn.Module):
         diffX = x2.size()[2] - x1.size()[2]
         diffY = x2.size()[3] - x1.size()[3]
 
-        x2 = x2[:, :, diffX // 2: -(diffX - diffX // 2), diffY // 2: -(diffY - diffY // 2)]
+        if diffX != 0:
+            x2 = x2[:, :, diffX // 2: -(diffX - diffX // 2), :]
+        else:
+            pass
+        if diffY != 0:
+            x2 = x2[:, :, :, diffY // 2: -(diffY - diffY // 2)]
+        else:
+            pass
+
+        # x2 = x2[:, :, diffX // 2: -(diffX - diffX // 2), diffY // 2: -(diffY - diffY // 2)]
         x = torch.cat([x2, x1], dim=1)
         x = self.conv(x)
         return x
