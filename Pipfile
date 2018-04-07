@@ -13,6 +13,9 @@ name = "pypi"
 pandas = "*"
 matplotlib = "*"
 ipython = "*"
+cython = "*"
+pydensecrf = "*"
+visdom = "*"
 
 
 [dev-packages]

@@ -1,8 +1,10 @@
 import numpy as np
 import pydensecrf.densecrf as dcrf
+from .utils import crop_v2_as_v1
 
 
 def dense_crf(img, output_probs):
+    img = crop_v2_as_v1(output_probs, img)
     h = output_probs.shape[0]
     w = output_probs.shape[1]
 

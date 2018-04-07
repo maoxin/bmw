@@ -3,10 +3,18 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import visdom
 
 # python 3 confusing imports :(
 from .unet_parts import *
 
+viz = visdom.Visdom()
+
+def vis_it(data, win):
+    if viz.check_connection():
+        viz.heatmap(data[0].sum(0).data.cpu(), win=win, opts=dict(title=win))
+
+    return 0
 
 class UNet(nn.Module):
     def __init__(self, n_channels, n_classes):
@@ -24,24 +32,34 @@ class UNet(nn.Module):
 
     def forward(self, x):
         x1 = self.inc(x)
-        print(f'x1: {x1.shape}')
+        vis_it(x1, 'x1')
+        # print(f'x1: {x1.shape}')
         x2 = self.down1(x1)
-        print(f'x2: {x2.shape}')
+        vis_it(x2, 'x2')
+        # print(f'x2: {x2.shape}')
         x3 = self.down2(x2)
-        print(f'x3: {x3.shape}')
+        vis_it(x3, 'x3')
+        # print(f'x3: {x3.shape}')
         x4 = self.down3(x3)
-        print(f'x4: {x4.shape}')
+        vis_it(x4, 'x4')
+        # print(f'x4: {x4.shape}')
         x5 = self.down4(x4)
-        print(f'x5: {x5.shape}')
+        vis_it(x5, 'x5')
+        # print(f'x5: {x5.shape}')
         x = self.up1(x5, x4)
-        print(f'up1: {x.shape}')
+        vis_it(x, 'up1')
+        # print(f'up1: {x.shape}')
         x = self.up2(x, x3)
-        print(f'up2: {x.shape}')
+        vis_it(x, 'up2')
+        # print(f'up2: {x.shape}')
         x = self.up3(x, x2)
-        print(f'up3: {x.shape}')
-        x = self.up4(x, x1)
-        print(f'up4: {x.shape}')
+        vis_it(x, 'up3')
+        # print(f'up3: {x.shape}')
+        x = self.up4(x.data, x1)
+        vis_it(x, 'up4')
+        # print(f'up4: {x.shape}')
         x = self.outc(x)
-        print(f'out: {x.shape}')
+        vis_it(x, 'out')
+        # print(f'out: {x.shape}')
         
         return x
