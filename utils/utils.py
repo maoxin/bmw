@@ -29,6 +29,18 @@ def resize_and_crop(pilimg, scale=0.5, final_height=None):
     img = img.crop((0, diff // 2, newW, newH - diff // 2))
     return img
 
+def crop_v2_as_v1(v1, v2):
+    try:
+        diffX = v2.size()[2] - v1.size()[2]
+        diffY = v2.size()[3] - v1.size()[3]
+        v2 = v2[:, :, diffX // 2: diffX // 2 + v1.size()[2], diffY // 2: diffY // 2 + v1.size()[3]]
+    except TypeError:
+        diffX = v2.shape[0] - v1.shape[0]
+        diffY = v2.shape[1] - v1.shape[1]
+        v2 = v2[diffX // 2: diffX // 2 + v1.shape[0], diffY // 2: diffY // 2 + v1.shape[1]]
+
+    return v2
+
 
 def batch(iterable, batch_size):
     """Yields lists by batch"""

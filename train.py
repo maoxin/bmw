@@ -75,7 +75,8 @@ def train_net(net, epochs=5, batch_size=2, lr=0.1, val_percent=0.05,
             probs = F.sigmoid(y_pred)
             probs_flat = probs.view(-1)
 
-            y_flat = y.view(-1)
+            y = crop_v2_as_v1(y_pred, y.unsqueeze(1))
+            y_flat = y.contiguous().view(-1)
 
             loss = criterion(probs_flat, y_flat.float())
             epoch_loss += loss.data[0]
@@ -93,7 +94,7 @@ def train_net(net, epochs=5, batch_size=2, lr=0.1, val_percent=0.05,
 
         if cp:
             torch.save(net.state_dict(),
-                       dir_checkpoint + 'CP{}.pth'.format(epoch+1))
+                       dir_checkpoint + 'CP_1_{}.pth'.format(epoch+1))
 
             print('Checkpoint {} saved !'.format(epoch+1))
 

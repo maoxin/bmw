@@ -49,10 +49,10 @@ def predict_img(net, full_img, gpu=False):
     y = F.upsample_bilinear(y, scale_factor=2).data[0][0].cpu().numpy()
 
     # y = merge_masks(y_l, y_r, full_img.size[0])
-    # yy = dense_crf(np.array(full_img).astype(np.uint8), y)
+    yy = dense_crf(np.array(full_img).astype(np.uint8), y)
 
-    # return yy > 0.5
-    return y > 0.5
+    return yy > 0.5
+    # return y > 0.5
 
 
 if __name__ == "__main__":
@@ -113,7 +113,7 @@ if __name__ == "__main__":
             fig = plt.figure()
             a = fig.add_subplot(1, 2, 1)
             a.set_title('Input image')
-            plt.imshow(img)
+            plt.imshow(crop_v2_as_v1(out, np.array(img)))
 
             b = fig.add_subplot(1, 2, 2)
             b.set_title('Output mask')

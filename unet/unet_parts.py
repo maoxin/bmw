@@ -3,6 +3,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from utils import crop_v2_as_v1
 
 
 class double_conv(nn.Module):
@@ -65,20 +66,8 @@ class up(nn.Module):
         # diffY = x1.size()[3] - x2.size()[3]
         # x2 = F.pad(x2, (diffX // 2, int(diffX / 2),
                         # diffY // 2, int(diffY / 2)))
-        
-        diffX = x2.size()[2] - x1.size()[2]
-        diffY = x2.size()[3] - x1.size()[3]
 
-        if diffX != 0:
-            x2 = x2[:, :, diffX // 2: -(diffX - diffX // 2), :]
-        else:
-            pass
-        if diffY != 0:
-            x2 = x2[:, :, :, diffY // 2: -(diffY - diffY // 2)]
-        else:
-            pass
-
-        # x2 = x2[:, :, diffX // 2: -(diffX - diffX // 2), diffY // 2: -(diffY - diffY // 2)]
+        x2 = crop_v2_as_v1(x1, x2)
         x = torch.cat([x2, x1], dim=1)
         x = self.conv(x)
         return x

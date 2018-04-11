@@ -13,6 +13,7 @@ from torch.autograd import Function, Variable
 class DiceCoeff(Function):
     """Dice coeff for individual examples"""
     def forward(self, input, target):
+        # print(input.shape, target.shape)
         self.save_for_backward(input, target)
         self.inter = torch.dot(input, target) + 0.0001
         self.union = torch.sum(input) + torch.sum(target) + 0.0001
